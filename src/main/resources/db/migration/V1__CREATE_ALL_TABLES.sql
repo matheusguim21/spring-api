@@ -31,13 +31,13 @@ CREATE TABLE IF NOT EXISTS SaudeSempre.Atendente (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL,
-    consultorio INTEGER NOT NULL,
+    consultorio_id INTEGER NOT NULL,
     usuario VARCHAR(255) NOT NULL,
     senha VARCHAR(255) NOT NULL
 );
 -- Criação da tabela Atendimento
 CREATE TABLE IF NOT EXISTS SaudeSempre.Atendimento (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     data DATE NOT NULL,
     atendente_id INTEGER NOT NULL,
 
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS SaudeSempre.Medico (
     nome VARCHAR(255) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
     consultorio_id INTEGER NOT NULL,
-    atendimento_id INTEGER NOT NULL,
+    atendimento_id UUID NOT NULL,
     FOREIGN KEY (consultorio_id) REFERENCES SaudeSempre.Consultorio(id),
     FOREIGN KEY (atendimento_id) REFERENCES SaudeSempre.Atendimento(id)
 );
@@ -64,15 +64,13 @@ CREATE TABLE IF NOT EXISTS SaudeSempre.Paciente (
     data_nascimento DATE NOT NULL,
     endereco_id VARCHAR(20),  -- Supondo que seja uma chave estrangeira para a tabela Endereco
     plano_de_saude_id INTEGER NOT NULL,
-    atendimento_id INTEGER,
     FOREIGN KEY (endereco_id) REFERENCES SaudeSempre.Endereco(id),
-    FOREIGN KEY (plano_de_saude_id) REFERENCES SaudeSempre.PlanoDeSaude(id),
-    FOREIGN KEY (atendimento_id) REFERENCES SaudeSempre.Atendimento(id)
-);
+    FOREIGN KEY (plano_de_saude_id) REFERENCES SaudeSempre.PlanoDeSaude(id)
+   );
 
 -- Criação da tabela Consulta
 CREATE TABLE IF NOT EXISTS SaudeSempre.Consulta (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY,
     data TIMESTAMP NOT NULL,
     tipo VARCHAR(10) NOT NULL,
     status VARCHAR(15) NOT NULL,

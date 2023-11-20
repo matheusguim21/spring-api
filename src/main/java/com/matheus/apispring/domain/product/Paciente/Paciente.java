@@ -1,6 +1,7 @@
 package com.matheus.apispring.domain.product.Paciente;
 
 import com.matheus.apispring.domain.product.Atendimento.Atendimento;
+import com.matheus.apispring.domain.product.Consulta.Consulta;
 import com.matheus.apispring.domain.product.Endereco.Endereco;
 import com.matheus.apispring.domain.product.PlanoDeSaude.PlanoDeSaude;
 import jakarta.persistence.*;
@@ -26,6 +27,8 @@ public class Paciente {
 	private Endereco endereco;
 	private String telefone;
 	private Date data_nascimento;
+	@OneToMany(mappedBy = "paciente")
+	private List<Consulta> consultas;
 	@ManyToOne @JoinColumn(name = "plano_de_saude_id")
 	private PlanoDeSaude planoDeSaude;
 	@OneToMany @JoinColumn(name = "atendimentos_id")
