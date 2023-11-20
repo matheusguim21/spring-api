@@ -13,7 +13,6 @@ import lombok.*;
 
 public class Endereco {
 	@Id
-@ManyToOne
 	private String id ;
 	private  String rua ;
 	private String numero;

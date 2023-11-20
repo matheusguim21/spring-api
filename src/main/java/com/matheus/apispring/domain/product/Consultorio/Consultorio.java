@@ -18,6 +18,7 @@ public class Consultorio {
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idConsultorio;
 	private String nome;
+	@OneToOne @JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 
 }

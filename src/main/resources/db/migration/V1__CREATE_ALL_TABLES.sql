@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS SaudeSempre;
 -- Criação da tabela Endereco
 CREATE TABLE IF NOT EXISTS SaudeSempre.Endereco (
-    idEndereco VARCHAR(20) NOT NULL PRIMARY KEY,
+    id VARCHAR(20) NOT NULL PRIMARY KEY,
     rua VARCHAR(255) NOT NULL,
     numero INTEGER NOT NULL,
     bairro VARCHAR(255) NOT NULL,
@@ -10,26 +10,20 @@ CREATE TABLE IF NOT EXISTS SaudeSempre.Endereco (
     cep VARCHAR(10) NOT NULL
 );
 
--- Criação da tabela PlanoSaude
-CREATE TABLE IF NOT EXISTS SaudeSempre.PlanoSaude (
+-- Criação da tabela PlanoDeSaude
+CREATE TABLE IF NOT EXISTS SaudeSempre.PlanoDeSaude (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL
 );
 
--- Criação da tabela Atendimento
-CREATE TABLE IF NOT EXISTS SaudeSempre.Atendimento (
-    id SERIAL PRIMARY KEY,
-    data DATE NOT NULL,
-    diagnostico VARCHAR(255) NOT NULL,
-    receita VARCHAR(255) NOT NULL
-);
+
 
 -- Criação da tabela Consultorio
 CREATE TABLE IF NOT EXISTS SaudeSempre.Consultorio (
-    idConsultorio SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
-    Endereco_idEndereco VARCHAR(20) NOT NULL,
-    FOREIGN KEY (Endereco_idEndereco) REFERENCES SaudeSempre.Endereco(idEndereco)
+    endereco_id VARCHAR(20) NOT NULL,
+    FOREIGN KEY (endereco_id) REFERENCES SaudeSempre.Endereco(id)
 );
 
 -- Criação da tabela Atendente
@@ -41,48 +35,55 @@ CREATE TABLE IF NOT EXISTS SaudeSempre.Atendente (
     usuario VARCHAR(255) NOT NULL,
     senha VARCHAR(255) NOT NULL
 );
+-- Criação da tabela Atendimento
+CREATE TABLE IF NOT EXISTS SaudeSempre.Atendimento (
+    id SERIAL PRIMARY KEY,
+    data DATE NOT NULL,
+    atendente_id INTEGER NOT NULL,
 
+    FOREIGN KEY (atendente_id) REFERENCES SaudeSempre.Atendente(id)
+
+);
 -- Criação da tabela Medico
 CREATE TABLE IF NOT EXISTS SaudeSempre.Medico (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     telefone VARCHAR(15) NOT NULL,
-    consultorioId INTEGER NOT NULL,
-    atendimentoId INTEGER NOT NULL,
-    FOREIGN KEY (consultorioId) REFERENCES SaudeSempre.Consultorio(idConsultorio),
-    FOREIGN KEY (atendimentoId) REFERENCES SaudeSempre.Atendimento(id)
+    consultorio_id INTEGER NOT NULL,
+    atendimento_id INTEGER NOT NULL,
+    FOREIGN KEY (consultorio_id) REFERENCES SaudeSempre.Consultorio(id),
+    FOREIGN KEY (atendimento_id) REFERENCES SaudeSempre.Atendimento(id)
 );
 
 -- Criação da tabela Paciente
 CREATE TABLE IF NOT EXISTS SaudeSempre.Paciente (
-    idPaciente SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     cpf VARCHAR(14) NOT NULL,
-    Endereco_idEndereco VARCHAR(20),  -- Supondo que seja uma chave estrangeira para a tabela Endereco
     telefone VARCHAR(15) NOT NULL,
-    dataNascimento DATE NOT NULL,
-    PlanoSaude_idPlanoSaude INTEGER NOT NULL,
-    Atendimento_idAtendimento INTEGER,
-    FOREIGN KEY (Endereco_idEndereco) REFERENCES SaudeSempre.Endereco(idEndereco),
-    FOREIGN KEY (PlanoSaude_idPlanoSaude) REFERENCES SaudeSempre.PlanoSaude(id),
-    FOREIGN KEY (Atendimento_idAtendimento) REFERENCES SaudeSempre.Atendimento(id)
+    data_nascimento DATE NOT NULL,
+    endereco_id VARCHAR(20),  -- Supondo que seja uma chave estrangeira para a tabela Endereco
+    plano_de_saude_id INTEGER NOT NULL,
+    atendimento_id INTEGER,
+    FOREIGN KEY (endereco_id) REFERENCES SaudeSempre.Endereco(id),
+    FOREIGN KEY (plano_de_saude_id) REFERENCES SaudeSempre.PlanoDeSaude(id),
+    FOREIGN KEY (atendimento_id) REFERENCES SaudeSempre.Atendimento(id)
 );
 
 -- Criação da tabela Consulta
 CREATE TABLE IF NOT EXISTS SaudeSempre.Consulta (
     id SERIAL PRIMARY KEY,
     data TIMESTAMP NOT NULL,
-    tipo VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL,
-    planoSaudeId INTEGER NOT NULL,
-    pacienteId INTEGER NOT NULL,
-    pacienteplanoId INTEGER NOT NULL,
-    atendenteId INTEGER NOT NULL,
-    atendenteConsultorioId INTEGER NOT NULL,
-    medicoId INTEGER NOT NULL,
-    medicoConsultorioId INTEGER NOT NULL,
-    FOREIGN KEY (planoSaudeId) REFERENCES SaudeSempre.PlanoSaude(id),
-    FOREIGN KEY (pacienteId) REFERENCES SaudeSempre.Paciente(idPaciente),
-    FOREIGN KEY (atendenteId) REFERENCES SaudeSempre.Atendente(id),
-    FOREIGN KEY (medicoId) REFERENCES SaudeSempre.Medico(id)
+    tipo VARCHAR(10) NOT NULL,
+    status VARCHAR(15) NOT NULL,
+    diagnostico VARCHAR(255) NOT NULL,
+    receita VARCHAR(255) NOT NULL,
+    plano_de_saude_id INTEGER NOT NULL,
+    paciente_id INTEGER NOT NULL,
+    atendente_id INTEGER NOT NULL,
+    medico_id INTEGER NOT NULL,
+    FOREIGN KEY (plano_de_saude_id) REFERENCES SaudeSempre.PlanoDeSaude(id),
+    FOREIGN KEY (paciente_id) REFERENCES SaudeSempre.Paciente(id),
+    FOREIGN KEY (atendente_id) REFERENCES SaudeSempre.Atendente(id),
+    FOREIGN KEY (medico_id) REFERENCES SaudeSempre.Medico(id)
 );
