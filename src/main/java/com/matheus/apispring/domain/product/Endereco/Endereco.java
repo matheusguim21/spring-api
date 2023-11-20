@@ -3,7 +3,7 @@ package com.matheus.apispring.domain.product.Endereco;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "endereco")
+@Table
 @Entity(name = "endereco")
 @EqualsAndHashCode(of = "id")
 @Getter
@@ -12,13 +12,14 @@ import lombok.*;
 @NoArgsConstructor
 
 public class Endereco {
-	@Id @GeneratedValue(strategy = GenerationType.UUID)
+	@Id
+@ManyToOne
 	private String id ;
 	private  String rua ;
 	private String numero;
 	private  String Bairro;
-	private String Cidade;
-	private String Estado;
+	private String cidade;
+	private String estado;
 	private String cep;
 
 
