@@ -5,10 +5,7 @@ import com.matheus.apispring.domain.product.Medico.Medico;
 import com.matheus.apispring.domain.product.Paciente.Paciente;
 import com.matheus.apispring.domain.product.PlanoDeSaude.PlanoDeSaude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -20,12 +17,14 @@ enum StatusConsulta{
 	agendada, concluída, EmProgresso
 }
 
-@Entity
-@Table
+@Entity(name = "consulta")
+@Table(name = "consulta")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+
 public class Consulta {
 	@Id @GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;

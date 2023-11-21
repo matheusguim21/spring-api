@@ -3,10 +3,7 @@
 
 	import com.matheus.apispring.domain.product.Consultorio.Consultorio;
 	import jakarta.persistence.*;
-	import lombok.AllArgsConstructor;
-	import lombok.Getter;
-	import lombok.NoArgsConstructor;
-	import lombok.Setter;
+	import lombok.*;
 
 	@Entity(name = "atendente")
 	@Table(name = "atendente")
@@ -14,6 +11,7 @@
 	@Setter
 	@NoArgsConstructor
 	@AllArgsConstructor
+	@EqualsAndHashCode(of = "id")
 
 	public class Atendente {
 		@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)

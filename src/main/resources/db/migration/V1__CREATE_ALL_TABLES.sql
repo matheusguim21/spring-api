@@ -2,8 +2,8 @@ CREATE SCHEMA IF NOT EXISTS SaudeSempre;
 -- Criação da tabela Endereco
 CREATE TABLE IF NOT EXISTS SaudeSempre.Endereco (
     id VARCHAR(20) NOT NULL PRIMARY KEY,
-    rua VARCHAR(255) NOT NULL,
-    numero INTEGER NOT NULL,
+    logradouro VARCHAR(255) NOT NULL,
+    numero VARCHAR(15) NOT NULL,
     bairro VARCHAR(255) NOT NULL,
     cidade VARCHAR(255) NOT NULL,
     estado VARCHAR(255) NOT NULL,

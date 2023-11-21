@@ -5,19 +5,19 @@ import com.matheus.apispring.domain.product.Consulta.Consulta;
 import com.matheus.apispring.domain.product.Endereco.Endereco;
 import com.matheus.apispring.domain.product.PlanoDeSaude.PlanoDeSaude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity(name = "paciente")
+@Table(name = "paciente")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+
 public class Paciente {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

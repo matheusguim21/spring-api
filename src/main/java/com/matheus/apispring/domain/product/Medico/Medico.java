@@ -3,19 +3,18 @@ package com.matheus.apispring.domain.product.Medico;
 import com.matheus.apispring.domain.product.Atendimento.Atendimento;
 import com.matheus.apispring.domain.product.Consultorio.Consultorio;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
-@Entity
-@Table
+@Entity(name= "medico")
+@Table(name="medico")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+
 
 public class Medico {
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)

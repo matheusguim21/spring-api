@@ -1,18 +1,17 @@
 package com.matheus.apispring.domain.product.PlanoDeSaude;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Entity
-@Table
+@Table(name = "planodesaude")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+
 public class PlanoDeSaude {
 	@Id @GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
