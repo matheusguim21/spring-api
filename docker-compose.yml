@@ -9,6 +9,6 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRESQL_USERNAME=springdocker
-      - POSTGRESQL_PASSWORD=springdocker
-      - POSTGRESQL_DATABASE=saudesempre
+      - POSTGRESQL_USERNAME=socinpro
+      - POSTGRESQL_PASSWORD=socinpro2024
+      - POSTGRESQL_DATABASE=socinproapp
