@@ -10,13 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/titular")
+//@RequestMapping("/titular")
 public class TitularController {
 	@Autowired
 	private TitularRepository repository;
 
-	@GetMapping
+	@GetMapping("/titular")
 
 	public ResponseEntity listarTitulares(){
 		try{
@@ -27,7 +29,7 @@ public class TitularController {
 		}
 	}
 
-	@PostMapping
+	@PostMapping("/titular")
 	public ResponseEntity criarTitular(@RequestBody @Valid RequestTitular data){
 		try{
 			Titular novoTitular = new Titular(data);
@@ -39,14 +41,23 @@ public class TitularController {
 		}
 	}
 
+	@PostMapping("/usuario")
 	public ResponseEntity criarUsuario(@RequestBody @Valid RequestUsuario data){
 		try{
-			var titular = repository.findTitularByCpf_cnpj(data.cpf_cnpj());
-			if(titular.equals(data.cpf_cnpj())){
-				titular.setUsuario(data.usuario());
-				titular.setSenha(data.senha());
-				repository.save(titular);
-				return (ResponseEntity) ResponseEntity.ok();
+			Titular titular =
+					repository.findByCpfCnpj(data.cpf_cnpj());
+
+			if(titular != null){
+				if (titular.getUsuario() == null) {
+					titular.setUsuario(data.usuario());
+					titular.setSenha(data.senha());
+					repository.save(titular);
+					return (ResponseEntity) ResponseEntity.ok("Usuário criado com" +
+							" sucesso");
+				}else {
+					return ResponseEntity.badRequest().body("já existe um " +
+							"usuário criado para esse titular");
+				}
 
 			}
 			else {
@@ -58,6 +69,26 @@ public class TitularController {
 		}
 
 	}
+
+	@DeleteMapping("/usuario")
+	public ResponseEntity deletarUsuario(@RequestBody @Valid RequestUsuario data){
+		try{
+			var titular = repository.findTitularByUsuario(data.usuario());
+			if (titular != null){
+				titular.setUsuario(null);
+				titular.setSenha(null);
+				repository.save(titular);
+				return ResponseEntity.ok().body("Usuário exclúido com sucesso");
+			}else {
+				return ResponseEntity.badRequest().body("Usuário não " +
+						"encontrado");
+			}
+
+		}catch (Exception error){
+			return ResponseEntity.badRequest().body(error.getMessage());
+		}
+
+	};
 
 
 }

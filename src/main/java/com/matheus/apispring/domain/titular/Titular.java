@@ -16,7 +16,7 @@ import java.math.BigInteger;
 public class Titular {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
 	private String nome;
 	private String cpf_cnpj;
