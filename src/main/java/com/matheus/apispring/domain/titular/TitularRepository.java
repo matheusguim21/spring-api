@@ -6,4 +6,6 @@ import java.math.BigInteger;
 
 public interface TitularRepository extends JpaRepository<Titular, BigInteger> {
 	Titular findTitularByCpf_cnpj(String cpf);
+	void updateTitularBy
+
 }
