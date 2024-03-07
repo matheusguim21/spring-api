@@ -1,5 +1,6 @@
 package com.matheus.apispring.domain.titular;
 
+import com.matheus.apispring.dtos.TitularDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,14 +30,14 @@ public class Titular {
 	@Nullable
 	private String foto_perfil;
 
-	public Titular(RequestTitular requestTitular){
-		this.cpf_cnpj = requestTitular.cpf_cnpj();
-		this.foto_perfil = requestTitular.foto_perfil();
-		this.id = requestTitular.id();
-		this.nome = requestTitular.nome();
-		this.usuario = requestTitular.usuario();
-		this.senha = requestTitular.senha();;
-		this.saldo = requestTitular.saldo();
+	public Titular(TitularDTO titularDTO){
+		this.cpf_cnpj = titularDTO.cpf_cnpj();
+		this.foto_perfil = titularDTO.foto_perfil();
+		this.id = titularDTO.id();
+		this.nome = titularDTO.nome();
+		this.usuario = titularDTO.usuario();
+		this.senha = titularDTO.senha();;
+		this.saldo = titularDTO.saldo();
 	}
 
 }

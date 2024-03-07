@@ -1,10 +1,11 @@
 package com.matheus.apispring.controllers;
 
 
-import com.matheus.apispring.domain.titular.RequestTitular;
-import com.matheus.apispring.domain.titular.RequestUsuario;
+import com.matheus.apispring.dtos.TitularDTO;
+import com.matheus.apispring.dtos.UsuarioDTO;
 import com.matheus.apispring.domain.titular.Titular;
 import com.matheus.apispring.domain.titular.TitularRepository;
+import com.matheus.apispring.services.TitularService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ import java.util.Optional;
 @RestController
 //@RequestMapping("/titular")
 public class TitularController {
+
+	@Autowired
+	private TitularService service;
 	@Autowired
 	private TitularRepository repository;
 
@@ -30,7 +34,7 @@ public class TitularController {
 	}
 
 	@PostMapping("/titular")
-	public ResponseEntity criarTitular(@RequestBody @Valid RequestTitular data){
+	public ResponseEntity criarTitular(@RequestBody @Valid TitularDTO data){
 		try{
 			Titular novoTitular = new Titular(data);
 			repository.save(novoTitular);
@@ -42,28 +46,13 @@ public class TitularController {
 	}
 
 	@PostMapping("/usuario")
-	public ResponseEntity criarUsuario(@RequestBody @Valid RequestUsuario data){
+	public ResponseEntity criarUsuario(@RequestBody @Valid UsuarioDTO data){
+
 		try{
-			Titular titular =
-					repository.findByCpfCnpj(data.cpf_cnpj());
+			service.criarUsuario(data);
+			return ResponseEntity.status(201).body("Usuário criado com " +
+					"sucesso");
 
-			if(titular != null){
-				if (titular.getUsuario() == null) {
-					titular.setUsuario(data.usuario());
-					titular.setSenha(data.senha());
-					repository.save(titular);
-					return (ResponseEntity) ResponseEntity.ok("Usuário criado com" +
-							" sucesso");
-				}else {
-					return ResponseEntity.badRequest().body("já existe um " +
-							"usuário criado para esse titular");
-				}
-
-			}
-			else {
-				return ResponseEntity.badRequest().body("Dados do titular " +
-						"inválidos");
-			}
 		}catch (Exception error){
 			return ResponseEntity.badRequest().body(error.getMessage());
 		}
@@ -71,7 +60,7 @@ public class TitularController {
 	}
 
 	@DeleteMapping("/usuario")
-	public ResponseEntity deletarUsuario(@RequestBody @Valid RequestUsuario data){
+	public ResponseEntity deletarUsuario(@RequestBody @Valid UsuarioDTO data){
 		try{
 			var titular = repository.findTitularByUsuario(data.usuario());
 			if (titular != null){

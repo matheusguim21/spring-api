@@ -1,9 +1,9 @@
-package com.matheus.apispring.domain.titular;
+package com.matheus.apispring.dtos;
 
 import javax.annotation.Nullable;
 import java.math.BigInteger;
 
-public record RequestTitular(
+public record TitularDTO(
 	BigInteger id,
 	String nome,
 	String cpf_cnpj,
