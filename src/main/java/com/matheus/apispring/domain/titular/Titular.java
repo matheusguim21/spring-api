@@ -1,6 +1,8 @@
 package com.matheus.apispring.domain.titular;
 
+import com.matheus.apispring.domain.usuario.Usuario;
 import com.matheus.apispring.dtos.TitularDTO;
+import com.matheus.apispring.dtos.UsuarioDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,10 +23,9 @@ public class Titular {
 	private BigInteger id;
 	private String nome;
 	private String cpf_cnpj;
-	@Nullable
-	private String usuario;
-	@Nullable
-	private String senha;
+
+
+
 	@Nullable
 	private Double saldo;
 	@Nullable
@@ -35,8 +36,6 @@ public class Titular {
 		this.foto_perfil = titularDTO.foto_perfil();
 		this.id = titularDTO.id();
 		this.nome = titularDTO.nome();
-		this.usuario = titularDTO.usuario();
-		this.senha = titularDTO.senha();;
 		this.saldo = titularDTO.saldo();
 	}
 

@@ -45,39 +45,6 @@ public class TitularController {
 		}
 	}
 
-	@PostMapping("/usuario")
-	public ResponseEntity criarUsuario(@RequestBody @Valid UsuarioDTO data){
-
-		try{
-			service.criarUsuario(data);
-			return ResponseEntity.status(201).body("Usuário criado com " +
-					"sucesso");
-
-		}catch (Exception error){
-			return ResponseEntity.badRequest().body(error.getMessage());
-		}
-
-	}
-
-	@DeleteMapping("/usuario")
-	public ResponseEntity deletarUsuario(@RequestBody @Valid UsuarioDTO data){
-		try{
-			var titular = repository.findTitularByUsuario(data.usuario());
-			if (titular != null){
-				titular.setUsuario(null);
-				titular.setSenha(null);
-				repository.save(titular);
-				return ResponseEntity.ok().body("Usuário exclúido com sucesso");
-			}else {
-				return ResponseEntity.badRequest().body("Usuário não " +
-						"encontrado");
-			}
-
-		}catch (Exception error){
-			return ResponseEntity.badRequest().body(error.getMessage());
-		}
-
-	};
 
 
 }
