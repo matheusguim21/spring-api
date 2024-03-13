@@ -66,13 +66,14 @@ public class UsuarioController {
 	@PostMapping("/login")
 	public ResponseEntity autenticarUsuario(@RequestBody @Valid UsuarioDTO data){
 		try{
-			boolean autenticado = service.autenticarUsuario(data);
-			if(autenticado) return ResponseEntity.ok().body("usuário " +
-					"autenticado");
+			Usuario usuario= service.autenticarUsuario(data);
+			if(usuario.isEnabled()) return ResponseEntity.ok().body("usuário " +
+					"autenticado" + usuario);
 			else return ResponseEntity.badRequest().body("Usuário ou senha " +
 					"inválidos");
 
 		}catch (Exception error){
+			System.out.println(error.getMessage());
 			return ResponseEntity.badRequest().body(error.getMessage());
 		}
 	};

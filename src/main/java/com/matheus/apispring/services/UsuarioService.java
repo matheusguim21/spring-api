@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -39,25 +40,27 @@ public class UsuarioService {
 	public List<Usuario> listarUsuários(){
 		return usuarioRepository.findAll();
 	}
-	public boolean autenticarUsuario(UsuarioDTO usuarioDTO){
+	public Usuario autenticarUsuario(UsuarioDTO usuarioDTO) throws AuthenticationException {
 		Optional<Usuario> usuario =
 				usuarioRepository.findUsuarioByNome_Usuario(usuarioDTO.usuario());
 		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
-		if(usuario.isPresent()) {
-
-			return crypt.matches(usuarioDTO.senha(), usuario.get().getSenha());
-
+		if (usuario.isPresent()) {
+			boolean autenticado = crypt.matches(usuarioDTO.senha(),
+					usuario.get().getSenha());
+			if (autenticado) return usuario.get();
 		}
-		return false;
+			throw new AuthenticationException("Usuário ou senha inválidos");
+
 	};
+
 
 	public void  excluirUsuario(UsuarioDTO usuarioDTO){
 
 			Optional<Usuario> usuario =
 				usuarioRepository.findUsuarioByNome_Usuario(usuarioDTO.usuario());
-
-			boolean autenticado = autenticarUsuario(usuarioDTO);
-
+		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
+			boolean autenticado = crypt.matches(usuarioDTO.senha(),
+					usuario.get().getSenha());
 			if(autenticado) usuarioRepository.deleteById(usuario.get().getId());
 		}
 
