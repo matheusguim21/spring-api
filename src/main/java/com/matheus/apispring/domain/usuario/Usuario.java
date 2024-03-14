@@ -3,6 +3,7 @@ package com.matheus.apispring.domain.usuario;
 import com.matheus.apispring.domain.titular.Titular;
 import com.matheus.apispring.dtos.UsuarioDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,16 +25,18 @@ public class Usuario implements UserDetails {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private BigInteger id;
 
-	private String usuario;
+	@Column(name = "nome_usuario")
+	private String nomeusuario;
 	private String senha;
 	private UsuarioRole role;
 
+	@NotNull
 	@OneToOne
 	@JoinColumn(name = "titular_id")
 	private Titular titular;
 
 	public  Usuario(UsuarioDTO usuarioDTO, Titular titular){
-		this.usuario = usuarioDTO.usuario();
+		this.nomeusuario = usuarioDTO.nomeusuario();
 		this.senha = usuarioDTO.senha();
 		this.role = UsuarioRole.valueOf(usuarioDTO.role());
 		this.titular = titular;
@@ -52,7 +55,7 @@ public class Usuario implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return usuario;
+		return nomeusuario;
 	}
 
 	@Override

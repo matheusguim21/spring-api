@@ -46,16 +46,9 @@ public class UsuarioController {
 	@DeleteMapping("/usuario")
 	public ResponseEntity deletarUsuario(@RequestBody @Valid UsuarioDTO data){
 		try{
-			Optional<Usuario> usuario =
-					repository.findUsuarioByNome_Usuario(data.usuario());
-				if(usuario.isPresent()) {
-					service.excluirUsuario(data);
-					return ResponseEntity.ok().body("Usuário exclúido com sucesso");
-				}
-			else {
-				return ResponseEntity.badRequest().body("Usuário não " +
-						"encontrado");
-			}
+			service.excluirUsuario(data);
+			return ResponseEntity.ok().body("Usuário exclúido com sucesso");
+
 
 		}catch (Exception error){
 			return ResponseEntity.badRequest().body(error.getMessage());
@@ -67,8 +60,7 @@ public class UsuarioController {
 	public ResponseEntity autenticarUsuario(@RequestBody @Valid UsuarioDTO data){
 		try{
 			Usuario usuario= service.autenticarUsuario(data);
-			if(usuario.isEnabled()) return ResponseEntity.ok().body("usuário " +
-					"autenticado" + usuario);
+			if(usuario.isEnabled()) return ResponseEntity.ok().body( usuario);
 			else return ResponseEntity.badRequest().body("Usuário ou senha " +
 					"inválidos");
 

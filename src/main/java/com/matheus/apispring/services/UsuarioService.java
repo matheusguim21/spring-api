@@ -20,17 +20,21 @@ public class UsuarioService {
 	private TitularRepository titularRepository;
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	public void criarUsuario(UsuarioDTO usuario){
-		Optional<Titular> titular =
-				titularRepository.findByCpfCnpj(usuario.cpf_cnpj());
 
-		if(titular.isPresent()){
+
+	public void criarUsuario(UsuarioDTO usuario){
+
+
+		if(titularRepository.existsTitularByCpfcnpj(usuario.cpfcnpj())){
+		Titular titular =
+				titularRepository.findTitularByCpfcnpj(usuario.cpfcnpj());
+
 			BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
 			String senhaCriptografada = crypt.encode(usuario.senha());
-			Usuario novoUsuario = new Usuario(usuario, titular.get());
+			Usuario novoUsuario = new Usuario(usuario, titular);
 			novoUsuario.setSenha(senhaCriptografada);
 			usuarioRepository.save(novoUsuario);
-
+			System.out.println("Chegou aqui");
 		}else{
 			throw new EntityNotFoundException("Forneça um titular existente");
 		}
@@ -41,28 +45,32 @@ public class UsuarioService {
 		return usuarioRepository.findAll();
 	}
 	public Usuario autenticarUsuario(UsuarioDTO usuarioDTO) throws AuthenticationException {
-		Optional<Usuario> usuario =
-				usuarioRepository.findUsuarioByNome_Usuario(usuarioDTO.usuario());
+
 		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
-		if (usuario.isPresent()) {
+		if (usuarioRepository.existsUsuarioByNomeusuario(usuarioDTO.nomeusuario())) {
+			Usuario usuario = usuarioRepository.findUsuarioByNomeusuario(usuarioDTO.nomeusuario());
 			boolean autenticado = crypt.matches(usuarioDTO.senha(),
-					usuario.get().getSenha());
-			if (autenticado) return usuario.get();
+					usuario.getSenha());
+			if (autenticado) return usuario;
 		}
 			throw new AuthenticationException("Usuário ou senha inválidos");
 
 	};
 
 
-	public void  excluirUsuario(UsuarioDTO usuarioDTO){
-
-			Optional<Usuario> usuario =
-				usuarioRepository.findUsuarioByNome_Usuario(usuarioDTO.usuario());
-		BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
+	public void  excluirUsuario(UsuarioDTO usuarioDTO) throws Exception {
+		if (usuarioRepository.existsUsuarioByNomeusuario(usuarioDTO.nomeusuario())) {
+			Usuario usuario =
+					usuarioRepository.findUsuarioByNomeusuario(usuarioDTO.nomeusuario());
+			BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
 			boolean autenticado = crypt.matches(usuarioDTO.senha(),
-					usuario.get().getSenha());
-			if(autenticado) usuarioRepository.deleteById(usuario.get().getId());
+					usuario.getSenha());
+			if (autenticado) usuarioRepository.deleteById(usuario.getId());
+
+		}else{
+			throw  new Exception("Usuário não existe");
 		}
+	}
 
 
 

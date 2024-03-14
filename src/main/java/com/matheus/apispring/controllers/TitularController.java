@@ -22,12 +22,12 @@ public class TitularController {
 	@Autowired
 	private TitularRepository repository;
 
-	@GetMapping("/titular")
+	@GetMapping("/titulares")
 
 	public ResponseEntity listarTitulares(){
 		try{
-			var titulares = repository.findAll();
-			return ResponseEntity.ok(titulares);
+			var titulares = service.buscarTitulares();
+			return ResponseEntity.ok().body(titulares);
 		}catch (Exception error){
 			return ResponseEntity.badRequest().body(error.getMessage());
 		}
@@ -36,8 +36,7 @@ public class TitularController {
 	@PostMapping("/titular")
 	public ResponseEntity criarTitular(@RequestBody @Valid TitularDTO data){
 		try{
-			Titular novoTitular = new Titular(data);
-			repository.save(novoTitular);
+			service.criarTitular(data);
 			return ResponseEntity.status(201).body("Titular cadastrado com " +
 					"sucesso");
 		}catch (Exception error){

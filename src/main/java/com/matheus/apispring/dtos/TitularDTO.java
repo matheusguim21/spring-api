@@ -6,7 +6,9 @@ import java.math.BigInteger;
 public record TitularDTO(
 	BigInteger id,
 	String nome,
-	String cpf_cnpj,
+	String cpfcnpj,
+	String pseudonimo,
+
 	@Nullable
 	String usuario,
 	@Nullable

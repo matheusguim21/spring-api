@@ -9,7 +9,7 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, BigInteger> {
-	@Query("SELECT u FROM Usuario u WHERE u.usuario = :nome_usuario")
-	Optional<Usuario> findUsuarioByNome_Usuario(@Param("nome_usuario") String nome_usuario);
-	UserDetails findByUsuario(String login);
+	Usuario findUsuarioByNomeusuario(String nomeUsuario);
+	UserDetails findByNomeusuario(String nomeUsuario);
+	boolean existsUsuarioByNomeusuario(String nomeUsuario);
 }
