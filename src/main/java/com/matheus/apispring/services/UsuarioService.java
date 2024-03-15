@@ -22,12 +22,16 @@ public class UsuarioService {
 	private UsuarioRepository usuarioRepository;
 
 
-	public void criarUsuario(UsuarioDTO usuario){
+	public void criarUsuario(UsuarioDTO usuario) throws Exception {
 
 
 		if(titularRepository.existsTitularByCpfcnpj(usuario.cpfcnpj())){
 		Titular titular =
 				titularRepository.findTitularByCpfcnpj(usuario.cpfcnpj());
+		if(usuarioRepository.existsUsuarioByNomeusuario(usuario.nomeusuario())){
+			throw  new Exception("Esse nome de usuário já existe, escolha " +
+					"outro");
+		}
 
 			BCryptPasswordEncoder crypt = new BCryptPasswordEncoder();
 			String senhaCriptografada = crypt.encode(usuario.senha());
@@ -41,7 +45,7 @@ public class UsuarioService {
 
 
 	}
-	public List<Usuario> listarUsuários(){
+	public List<Usuario> listarUsuarios(){
 		return usuarioRepository.findAll();
 	}
 	public Usuario autenticarUsuario(UsuarioDTO usuarioDTO) throws AuthenticationException {

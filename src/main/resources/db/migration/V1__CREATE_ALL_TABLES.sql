@@ -23,7 +23,7 @@ CREATE TABLE socinproapp.Titular (
 -- Tabela Usuario
 CREATE TABLE socinproapp.Usuario (
                                      id BIGINT PRIMARY KEY DEFAULT nextval('socinproapp.usuario_id_seq'),
-                                     usuario VARCHAR NOT NULL UNIQUE,
+                                     nome_usuario VARCHAR NOT NULL UNIQUE,
                                      senha VARCHAR NOT NULL,
                                      role VARCHAR DEFAULT 'user',
                                      titular_id BIGINT UNIQUE,

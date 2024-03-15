@@ -5,6 +5,7 @@ import com.matheus.apispring.domain.usuario.UsuarioRepository;
 import com.matheus.apispring.dtos.UsuarioDTO;
 import com.matheus.apispring.services.UsuarioService;
 import jakarta.validation.Valid;
+import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.Optional;
 @RestController
 //@RequestMapping("/usuario")
 public class UsuarioController {
+
 	@Autowired
 	private UsuarioRepository repository;
 	@Autowired
@@ -22,7 +24,7 @@ public class UsuarioController {
 	@GetMapping("usuarios")
 	public ResponseEntity listarUsuarios(){
 		try{
-			var titulares = service.listarUsuários();
+			var titulares = service.listarUsuarios();
 			return ResponseEntity.ok(titulares);
 		}catch (Exception error){
 			return ResponseEntity.badRequest().body(error.getMessage());
@@ -65,7 +67,8 @@ public class UsuarioController {
 					"inválidos");
 
 		}catch (Exception error){
-			System.out.println(error.getMessage());
+
+			System.out.println(error.getClass());
 			return ResponseEntity.badRequest().body(error.getMessage());
 		}
 	};
