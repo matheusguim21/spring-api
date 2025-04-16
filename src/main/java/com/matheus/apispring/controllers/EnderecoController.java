@@ -29,7 +29,7 @@ public class EnderecoController{
 			Endereco endereco = new Endereco(data);
 			var enderecoCridao = repository.save(endereco);
 			System.out.println(data);
-			return ResponseEntity.ok("Endereço criado com sucesso");
+			return ResponseEntity.ok("Endereço criado com suesso");
 		}
 		return ResponseEntity.badRequest().build();
 	}
